@@ -66,5 +66,22 @@ document.addEventListener('DOMContentLoaded', function () {
   // Initial display of existing data
   displayDailyReports();
   displayWeeklyAverage();
+
+  // Your Firebase configuration from step 1
+const firebaseConfig = {
+  apiKey: "your-api-key",
+  authDomain: "your-app.firebaseapp.com",
+  projectId: "your-project-id",
+  storageBucket: "your-app.appspot.com",
+  messagingSenderId: "your-messaging-sender-id",
+  appId: "your-app-id"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Database
+const database = firebase.database();
+
 });
 
