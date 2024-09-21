@@ -5,6 +5,23 @@ document.addEventListener('DOMContentLoaded', function () {
   const weeklyAverage = document.getElementById('weeklyAverage');
   let results = JSON.parse(localStorage.getItem('moodData')) || [];
 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDAcuQTkeAHOMbazn-Dmf9KuCPFuI3sdyk",
+  authDomain: "healing-site.firebaseapp.com",
+  projectId: "healing-site",
+  storageBucket: "healing-site.appspot.com",
+  messagingSenderId: "414554343739",
+  appId: "1:414554343739:web:75083b9eedf3f59d738f1e",
+  measurementId: "G-3TV74H6QE7"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
+
+  
   // Function to display daily reports
   function displayDailyReports() {
   dailyReport.innerHTML = '';  // Clear previous reports
@@ -75,19 +92,7 @@ submitButton.addEventListener('click', function (e) {
     displayWeeklyAverage();
 });
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDAcuQTkeAHOMbazn-Dmf9KuCPFuI3sdyk",
-  authDomain: "healing-site.firebaseapp.com",
-  projectId: "healing-site",
-  storageBucket: "healing-site.appspot.com",
-  messagingSenderId: "414554343739",
-  appId: "1:414554343739:web:75083b9eedf3f59d738f1e",
-  measurementId: "G-3TV74H6QE7"
-};
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 });
 
