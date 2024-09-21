@@ -46,29 +46,29 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // When user submits the mood
-    submitButton.addEventListener('click', function (e) {
-        e.preventDefault(); // Prevent form from submitting
+   submitButton.addEventListener('click', function (e) {
+    e.preventDefault();
 
-        const selectedMood = moodSelect.value;
-        const currentDate = new Date().toLocaleDateString();
-        const timestamp = new Date().toISOString(); // Get the current timestamp
-        const moodData = { date: currentDate, timestamp: timestamp, mood: selectedMood };
+    const selectedMood = moodSelect.value;
+    const currentDate = new Date().toLocaleDateString();
+    const timestamp = new Date().toISOString(); // Get the current timestamp
+    const moodData = { date: currentDate, timestamp: timestamp, mood: selectedMood };
 
-        console.log('Mood Data:', moodData); // Log mood data
+    console.log('Attempting to save mood data:', moodData); // Log the mood data
 
-        // Use a unique key based on the date and timestamp
-        const uniqueKey = `${currentDate}_${new Date().getTime()}`; // Combine date with timestamp
-        set(ref(database, 'moods/' + uniqueKey), moodData)
-            .then(() => {
-                console.log('Mood data saved successfully!');
-                alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
-                displayDailyReports(); // Update daily reports after saving
-            })
-            .catch((error) => {
-                console.error('Error saving data:', error);
-            });
-    });
+    // Use a unique key based on the timestamp
+    const uniqueKey = new Date().getTime(); // Use a numeric timestamp for a unique key
+    set(ref(database, 'moods/' + uniqueKey), moodData)
+        .then(() => {
+            console.log('Mood data saved successfully!');
+            alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
+            displayDailyReports(); // Update daily reports after saving
+        })
+        .catch((error) => {
+            console.error('Error saving data:', error);
+        });
+});
+
 
     // Initialize and display data on page load
     displayDailyReports();
