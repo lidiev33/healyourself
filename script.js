@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const moodSelect = document.getElementById('mood');
     const submitButton = document.querySelector('button');
     const dailyReport = document.getElementById('dailyReport');
-    const weeklyAverage = document.getElementById('weeklyAverage');
 
     // Your Firebase configuration object
     const firebaseConfig = {
@@ -36,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 snapshot.forEach((childSnapshot) => {
                     const moodEntry = childSnapshot.val();
                     const li = document.createElement('li');
-                    li.textContent = `${moodEntry.date}: ${moodEntry.mood}`;
+                    li.textContent = `${moodEntry.date} (${moodEntry.timestamp}): ${moodEntry.mood}`;
                     dailyReport.appendChild(li);
                 });
             } else {
@@ -53,10 +52,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const selectedMood = moodSelect.value;
         const currentDate = new Date().toLocaleDateString();
-        const moodData = { date: currentDate, mood: selectedMood };
+        const timestamp = new Date().toISOString(); // Get the current timestamp
+        const moodData = { date: currentDate, timestamp: timestamp, mood: selectedMood };
 
-        // Push data to Firebase
-        set(ref(database, 'moods/' + currentDate), moodData)
+        // Use a unique key based on the timestamp
+        const uniqueKey = new Date().getTime(); // Use a numeric timestamp for a unique key
+        set(ref(database, 'moods/' + uniqueKey), moodData)
             .then(() => {
                 console.log('Mood data saved successfully!');
                 alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
