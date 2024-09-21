@@ -55,8 +55,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const timestamp = new Date().toISOString(); // Get the current timestamp
         const moodData = { date: currentDate, timestamp: timestamp, mood: selectedMood };
 
-        // Use a unique key based on the timestamp
-        const uniqueKey = new Date().getTime(); // Use a numeric timestamp for a unique key
+        console.log('Mood Data:', moodData); // Log mood data
+
+        // Use a unique key based on the date and timestamp
+        const uniqueKey = `${currentDate}_${new Date().getTime()}`; // Combine date with timestamp
         set(ref(database, 'moods/' + uniqueKey), moodData)
             .then(() => {
                 console.log('Mood data saved successfully!');
@@ -71,4 +73,3 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize and display data on page load
     displayDailyReports();
 });
-
