@@ -7,13 +7,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to display daily reports
   function displayDailyReports() {
-    dailyReport.innerHTML = '';  // Clear previous reports
-    results.forEach(entry => {
+  dailyReport.innerHTML = '';  // Clear previous reports
+  
+  // Retrieve data from Firebase
+  database.ref('moods').once('value', function (snapshot) {
+    snapshot.forEach(function (childSnapshot) {
+      const moodEntry = childSnapshot.val();
       const li = document.createElement('li');
-      li.textContent = `${entry.date}: ${entry.mood}`;
+      li.textContent = `${moodEntry.date}: ${moodEntry.mood}`;
       dailyReport.appendChild(li);
     });
-  }
+  });
+}
 
   // Function to calculate weekly average mood score
   function calculateWeeklyAverage() {
@@ -35,6 +40,8 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
 
+  
+
     const total = moodScores.reduce((a, b) => a + b, 0);
     return (total / moodScores.length).toFixed(2);  // Returns the average with 2 decimal places
   }
@@ -45,27 +52,28 @@ document.addEventListener('DOMContentLoaded', function () {
     weeklyAverage.textContent = `Average Mood Score: ${average}`;
   }
 
-  // Event listener for the submit button
-  submitButton.addEventListener('click', function (e) {
+  // When user submits the mood
+submitButton.addEventListener('click', function (e) {
     e.preventDefault();
 
     const selectedMood = moodSelect.value;
     const currentDate = new Date().toLocaleDateString();
     const moodData = { date: currentDate, mood: selectedMood };
 
-    results.push(moodData);
-    localStorage.setItem('moodData', JSON.stringify(results));
+    // Push data to Firebase
+    database.ref('moods/' + currentDate).set(moodData)
+      .then(() => {
+        console.log('Mood data saved successfully!');
+        alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
+      })
+      .catch((error) => {
+        console.error('Error saving data:', error);
+      });
 
     // Update daily and weekly reports
     displayDailyReports();
     displayWeeklyAverage();
-
-    alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
-  });
-
-  // Initial display of existing data
-  displayDailyReports();
-  displayWeeklyAverage();
+});
 
 const firebaseConfig = {
   apiKey: "AIzaSyDAcuQTkeAHOMbazn-Dmf9KuCPFuI3sdyk",
