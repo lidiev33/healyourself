@@ -13,13 +13,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Your Firebase configuration object
     const firebaseConfig = {
         apiKey: "AIzaSyDAcuQTkeAHOMbazn-Dmf9KuCPFuI3sdyk",
-        authDomain: "healing-site.firebaseapp.com",
-        databaseURL: "https://healing-site-default-rtdb.firebaseio.com",
-        projectId: "healing-site",
-        storageBucket: "healing-site.appspot.com",
-        messagingSenderId: "414554343739",
-        appId: "1:414554343739:web:75083b9eedf3f59d738f1e",
-        measurementId: "G-3TV74H6QE7"
+      authDomain: "healing-site.firebaseapp.com",
+      databaseURL: "https://healing-site-default-rtdb.firebaseio.com",
+      projectId: "healing-site",
+      storageBucket: "healing-site.appspot.com",
+      messagingSenderId: "414554343739",
+      appId: "1:414554343739:web:75083b9eedf3f59d738f1e",
+      measurementId: "G-3TV74H6QE7"
     };
 
     // Initialize Firebase
