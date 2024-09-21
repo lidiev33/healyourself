@@ -2,6 +2,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js";
 import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.1.0/firebase-database.js";
 
+console.log("Script loaded successfully");
+
 // Initialize Firebase when the document is ready
 document.addEventListener('DOMContentLoaded', function () {
     const moodSelect = document.getElementById('mood');
