@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
-
+    console.log("Firebase initialized", app);
+    
     // Function to display daily reports
     function displayDailyReports() {
         dailyReport.innerHTML = ''; // Clear previous reports
@@ -57,9 +58,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const moodData = { date: currentDate, timestamp: timestamp, mood: selectedMood };
 
     console.log('Attempting to save mood data:', moodData); // Log the mood data
-
+    
     // Use a unique key based on the timestamp
     const uniqueKey = new Date().getTime(); // Use a numeric timestamp for a unique key
+    console.log('Selected mood:', selectedMood);
     set(ref(database, 'moods/' + uniqueKey), moodData)
         .then(() => {
             console.log('Mood data saved successfully!');
