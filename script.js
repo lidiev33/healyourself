@@ -1,24 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
   const moodSelect = document.getElementById('mood');
   const submitButton = document.querySelector('button');
-  const results = [];
+  const dailyReport = document.getElementById('dailyReport');
+  const weeklyAverage = document.getElementById('weeklyAverage');
+  let results = JSON.parse(localStorage.getItem('moodData')) || [];
 
-  // Event listener for the submit button
-  submitButton.addEventListener('click', function (e) {
-    e.preventDefault();  // Prevents the page from refreshing
-    
-    const selectedMood = moodSelect.value;
-    const currentDate = new Date().toLocaleDateString();
-    const moodData = { date: currentDate, mood: selectedMood };
-    
-    results.push(moodData);
-    localStorage.setItem('moodData', JSON.stringify(results));
-    
-    alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
-  });
+  // Function to display daily reports
+  function displayDailyReports() {
+    dailyReport.innerHTML = '';  // Clear previous reports
+    results.forEach(entry => {
+      const li = document.createElement('li');
+      li.textContent = `${entry.date}: ${entry.mood}`;
+      dailyReport.appendChild(li);
+    });
+  }
 
   // Function to calculate weekly average mood score
-  function calculateAverage() {
+  function calculateWeeklyAverage() {
+    if (results.length === 0) return 0;
     let moodScores = results.map(entry => {
       switch (entry.mood) {
         case 'great':
@@ -37,9 +36,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const total = moodScores.reduce((a, b) => a + b, 0);
-    return (moodScores.length > 0) ? (total / moodScores.length).toFixed(2) : 0;
+    return (total / moodScores.length).toFixed(2);  // Returns the average with 2 decimal places
   }
 
-  // Display the weekly average (you can expand this)
-  console.log('Weekly Average Mood:', calculateAverage());
+  // Function to display the weekly average
+  function displayWeeklyAverage() {
+    const average = calculateWeeklyAverage();
+    weeklyAverage.textContent = `Average Mood Score: ${average}`;
+  }
+
+  // Event listener for the submit button
+  submitButton.addEventListener('click', function (e) {
+    e.preventDefault();
+
+    const selectedMood = moodSelect.value;
+    const currentDate = new Date().toLocaleDateString();
+    const moodData = { date: currentDate, mood: selectedMood };
+
+    results.push(moodData);
+    localStorage.setItem('moodData', JSON.stringify(results));
+
+    // Update daily and weekly reports
+    displayDailyReports();
+    displayWeeklyAverage();
+
+    alert(`Mood recorded for ${currentDate}: ${selectedMood}`);
+  });
+
+  // Initial display of existing data
+  displayDailyReports();
+  displayWeeklyAverage();
 });
+
